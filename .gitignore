@@ -1,0 +1,23 @@
+.gradle
+/build/
+
+bin/
+.settings/
+.project
+.classpath
+
+### Maven ###
+target/
+.mvn/wrapper/maven-wrapper.jar
+
+### Mac OS ###
+.DS_Store
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### CodeNation CLI ###
+result.json
