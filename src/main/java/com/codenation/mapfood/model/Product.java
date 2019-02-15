@@ -1,21 +1,15 @@
 package com.codenation.mapfood.model;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Entity
 public class Product {
 
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private UUID id;
+    private String id;
 
     private String description;
     private String category;
@@ -27,11 +21,11 @@ public class Product {
     @ManyToOne
     private City city;
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 

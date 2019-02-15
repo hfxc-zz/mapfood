@@ -1,33 +1,30 @@
 package com.codenation.mapfood.model;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
-import java.util.UUID;
 
 @Entity
 public class Restaurant {
 
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private UUID id;
+    private String id;
 
     private String name;
-    private String type;
 
     @Embedded
     private Coordinates coordinates;
 
     @ManyToOne
+    private RestaurantType type;
+
+    @ManyToOne
     private City city;
 
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -55,11 +52,11 @@ public class Restaurant {
         this.coordinates = coordinates;
     }
 
-    public String getType() {
+    public RestaurantType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(RestaurantType type) {
         this.type = type;
     }
 }
