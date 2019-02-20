@@ -1,6 +1,8 @@
 package com.codenation.mapfood.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Restaurant {
@@ -18,6 +20,9 @@ public class Restaurant {
 
     @ManyToOne
     private City city;
+
+    @OneToMany(mappedBy="restaurant")
+    private List<Order> orders;
 
 
     public String getId() {
@@ -58,5 +63,12 @@ public class Restaurant {
 
     public void setType(RestaurantType type) {
         this.type = type;
+    }
+
+    public void addOrder(Order order) {
+        if(orders == null) {
+            orders = new ArrayList<Order>();
+        }
+        orders.add(order);
     }
 }
