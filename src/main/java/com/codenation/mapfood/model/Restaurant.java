@@ -1,6 +1,7 @@
 package com.codenation.mapfood.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Restaurant {
@@ -18,6 +19,9 @@ public class Restaurant {
 
     @ManyToOne
     private City city;
+
+    @OneToMany
+    private List<Order> orders;
 
 
     public String getId() {

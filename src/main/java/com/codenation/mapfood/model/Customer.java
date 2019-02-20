@@ -1,6 +1,7 @@
 package com.codenation.mapfood.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Customer {
@@ -9,6 +10,9 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_seq")
     @SequenceGenerator(name = "customer_seq", sequenceName = "customer_seq", allocationSize = 1)
     private Long id;
+
+    @OneToMany
+    private List<Order> orders;
 
     @Embedded
     private Coordinates coordinates;
@@ -27,5 +31,13 @@ public class Customer {
 
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 }
