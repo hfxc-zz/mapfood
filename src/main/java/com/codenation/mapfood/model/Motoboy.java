@@ -1,6 +1,7 @@
 package com.codenation.mapfood.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -11,7 +12,7 @@ public class Motoboy {
     @SequenceGenerator(name = "motoboy_seq", sequenceName = "motoboy_seq", allocationSize = 1)
     private Long id;
 
-    @OneToMany
+    @OneToMany(mappedBy="motoboy")
     private List<Order> orders;
 
     @Embedded
@@ -39,5 +40,12 @@ public class Motoboy {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    public void addOrder(Order order) {
+        if(orders == null) {
+            orders = new ArrayList<Order>();
+        }
+        orders.add(order);
     }
 }

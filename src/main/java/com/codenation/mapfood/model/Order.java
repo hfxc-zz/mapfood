@@ -11,11 +11,14 @@ public class Order {
     private List<Product> productList;
     private boolean inProgress;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="RESTAURANT_ID")
     private Restaurant restaurant;
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="CUSTOMER_ID")
     private Customer customer;
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="MOTOBOY_ID")
     private Motoboy motoboy;
 
     public Long getId() {
@@ -34,14 +37,6 @@ public class Order {
         this.productList = productList;
     }
 
-    public Restaurant getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
-    }
-
     public boolean isInProgress() {
         return inProgress;
     }
@@ -50,12 +45,22 @@ public class Order {
         this.inProgress = inProgress;
     }
 
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+        restaurant.addOrder(this);
+    }
+
     public Customer getCustomer() {
         return customer;
     }
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+        customer.addOrder(this);
     }
 
     public Motoboy getMotoboy() {
@@ -64,5 +69,6 @@ public class Order {
 
     public void setMotoboy(Motoboy motoboy) {
         this.motoboy = motoboy;
+        motoboy.addOrder(this);
     }
 }
