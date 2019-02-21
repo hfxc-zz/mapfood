@@ -6,6 +6,8 @@ import java.util.List;
 public class Order {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_seq")
+    @SequenceGenerator(name = "order_seq", sequenceName = "order_seq", allocationSize = 1)
     private Long id;
     @ManyToMany
     private List<Product> productList;
