@@ -3,14 +3,15 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class Order {
+public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_seq")
     @SequenceGenerator(name = "order_seq", sequenceName = "order_seq", allocationSize = 1)
     private Long id;
     @ManyToMany
-    private List<Product> productList;
+    @JoinColumn(name = "product_id")
+    private List<Product> products;
     private boolean inProgress;
 
     @ManyToOne(fetch=FetchType.LAZY)
@@ -31,12 +32,12 @@ public class Order {
         this.id = id;
     }
 
-    public List<Product> getProductList() {
-        return productList;
+    public List<Product> getProducts() {
+        return products;
     }
 
-    public void setProductList(List<Product> productList) {
-        this.productList = productList;
+    public void setProducts(List<Product> productList) {
+        this.products = products;
     }
 
     public boolean isInProgress() {
@@ -71,6 +72,6 @@ public class Order {
 
     public void setMotoboy(Motoboy motoboy) {
         this.motoboy = motoboy;
-        motoboy.addOrder(this);
+        //motoboy.addOrder(this);
     }
 }

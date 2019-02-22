@@ -21,8 +21,8 @@ public class Restaurant {
     @ManyToOne
     private City city;
 
-    @OneToMany(mappedBy="restaurant")
-    private List<Order> orders;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="motoboy")
+    private List<Orders> orders;
 
 
     public String getId() {
@@ -65,10 +65,10 @@ public class Restaurant {
         this.type = type;
     }
 
-    public void addOrder(Order order) {
-        if(orders == null) {
-            orders = new ArrayList<Order>();
+    public void addOrder(Orders orders) {
+        if(this.orders == null) {
+            this.orders = new ArrayList<Orders>();
         }
-        orders.add(order);
+        this.orders.add(orders);
     }
 }
