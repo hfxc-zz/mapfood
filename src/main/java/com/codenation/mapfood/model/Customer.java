@@ -1,7 +1,7 @@
 package com.codenation.mapfood.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -12,7 +12,8 @@ public class Customer {
     @SequenceGenerator(name = "customer_seq", sequenceName = "customer_seq", allocationSize = 1)
     private Long id;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy="motoboy")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="customer")
+    @JsonIgnore
     private List<Orders> orders;
 
     @Embedded
@@ -42,10 +43,4 @@ public class Customer {
         this.orders = orders;
     }
 
-    public void addOrder(Orders orders) {
-        if(this.orders == null) {
-            this.orders = new ArrayList<Orders>();
-        }
-        this.orders.add(orders);
-    }
 }
