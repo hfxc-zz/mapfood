@@ -1,15 +1,15 @@
 package com.codenation.mapfood.service.impl;
 
-import com.codenation.mapfood.client.GoogleMapsClient;
-import com.codenation.mapfood.client.RouteInformation;
+import com.codenation.mapfood.client.*;
 import com.codenation.mapfood.model.Coordinates;
 import com.codenation.mapfood.service.MapService;
-import com.google.maps.model.DistanceMatrix;
-import com.google.maps.model.LatLng;
+import com.google.maps.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,20 +25,24 @@ public class MapServiceImpl implements MapService {
 
     @Override
     public RouteInformation estimateTimeAndDistance(Coordinates src, List<Coordinates> dests) {
-        Instant departureTime = Instant.now();
-        LatLng departureLocation = coordinateToLatLng(src);
-        List<LatLng> arrivalLocations = dests.stream()
-                                             .map(c -> coordinateToLatLng(c))
-                                             .collect(Collectors.toList());
+        return null;
+    }
 
-        LatLng[] arrivals = (LatLng[]) arrivalLocations.toArray();
-        DistanceMatrix matrix = mapsClient.estimateRouteTime(departureTime, true, departureLocation, arrivals);
+    public List<Route> getRoutes(Coordinates origin, Coordinates destination) {
+        return getRoutes(origin, destination, new ArrayList<>());
+    }
 
-        RouteInformation result = new RouteInformation();
-        result.setSrc(departureLocation);
-        result.setDests(arrivalLocations);
-        result.setDuration(matrix.rows[0].elements[0].duration);
-        result.setDistance(matrix.rows[0].elements[0].distance);
-        return result;
+    public List<Route> getRoutes(Coordinates origin, Coordinates destination, List<Coordinates> stops) {
+        LatLng originLatLng = coordinateToLatLng(origin);
+        LatLng destLatLng = coordinateToLatLng(destination);
+        List<LatLng> stopsLatLng = stops.stream().map(this::coordinateToLatLng).collect(Collectors.toList());
+
+        DirectionsResult result = mapsClient.getDirections(Instant.now(),
+                true, originLatLng, destLatLng,
+                stopsLatLng.toArray(new LatLng[stopsLatLng.size()]));
+
+        return Arrays.stream(result.routes)
+                .map(Route::new)
+                .collect(Collectors.toList());
     }
 }
