@@ -1,7 +1,7 @@
 package com.codenation.mapfood.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -12,8 +12,10 @@ public class Motoboy {
     @SequenceGenerator(name = "motoboy_seq", sequenceName = "motoboy_seq", allocationSize = 1)
     private Long id;
 
-    @OneToMany(mappedBy="motoboy")
-    private List<Order> orders;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="motoboy")
+    @JsonIgnore
+    private List<Orders> orders;
 
     @Embedded
     private Coordinates coordinates;
@@ -34,18 +36,12 @@ public class Motoboy {
         this.coordinates = coordinates;
     }
 
-    public List<Order> getOrders() {
+    public List<Orders> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
+    public void setOrders(List<Orders> orders) {
         this.orders = orders;
     }
 
-    public void addOrder(Order order) {
-        if(orders == null) {
-            orders = new ArrayList<Order>();
-        }
-        orders.add(order);
-    }
 }
