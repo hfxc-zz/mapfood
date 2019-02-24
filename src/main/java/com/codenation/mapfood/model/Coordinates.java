@@ -13,7 +13,7 @@ public class Coordinates {
     Coordinates() {
     }
 
-    Coordinates(String longitude, String latitude) {
+    public Coordinates(String longitude, String latitude) {
         MathContext mathContext = new MathContext(8);
 
         this.longitude = new BigDecimal(longitude, mathContext);

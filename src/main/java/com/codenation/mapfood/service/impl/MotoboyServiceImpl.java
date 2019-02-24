@@ -1,8 +1,9 @@
-package com.codenation.mapfood.service;
+package com.codenation.mapfood.service.impl;
 
 import com.codenation.mapfood.model.Coordinates;
 import com.codenation.mapfood.model.Motoboy;
 import com.codenation.mapfood.repository.MotoboyRepository;
+import com.codenation.mapfood.service.MotoboyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
