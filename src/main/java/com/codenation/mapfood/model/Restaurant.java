@@ -1,7 +1,7 @@
 package com.codenation.mapfood.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,8 +21,9 @@ public class Restaurant {
     @ManyToOne
     private City city;
 
-    @OneToMany(mappedBy="restaurant")
-    private List<Order> orders;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="restaurant")
+    @JsonIgnore
+    private List<Orders> orders;
 
 
     public String getId() {
@@ -65,10 +66,11 @@ public class Restaurant {
         this.type = type;
     }
 
-    public void addOrder(Order order) {
-        if(orders == null) {
-            orders = new ArrayList<Order>();
-        }
-        orders.add(order);
+    public List<Orders> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Orders> orders) {
+        this.orders = orders;
     }
 }

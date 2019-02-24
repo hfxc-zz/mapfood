@@ -3,24 +3,28 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class Order {
+public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_seq")
     @SequenceGenerator(name = "order_seq", sequenceName = "order_seq", allocationSize = 1)
     private Long id;
+
     @ManyToMany
-    private List<Product> productList;
+    @JoinTable(name = "orders_product", joinColumns = @JoinColumn(name = "orders_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private List<Product> products;
     private boolean inProgress;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="RESTAURANT_ID")
+    @ManyToOne
+    @JoinColumn(name="restaurant_id")
     private Restaurant restaurant;
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="CUSTOMER_ID")
+
+    @ManyToOne
+    @JoinColumn(name="customer_id")
     private Customer customer;
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="MOTOBOY_ID")
+
+    @ManyToOne
+    @JoinColumn(name="motoboy_id")
     private Motoboy motoboy;
 
     public Long getId() {
@@ -31,12 +35,12 @@ public class Order {
         this.id = id;
     }
 
-    public List<Product> getProductList() {
-        return productList;
+    public List<Product> getProducts() {
+        return products;
     }
 
-    public void setProductList(List<Product> productList) {
-        this.productList = productList;
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     public boolean isInProgress() {
@@ -53,7 +57,6 @@ public class Order {
 
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
-        restaurant.addOrder(this);
     }
 
     public Customer getCustomer() {
@@ -62,7 +65,6 @@ public class Order {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
-        customer.addOrder(this);
     }
 
     public Motoboy getMotoboy() {
@@ -71,6 +73,5 @@ public class Order {
 
     public void setMotoboy(Motoboy motoboy) {
         this.motoboy = motoboy;
-        motoboy.addOrder(this);
     }
 }
