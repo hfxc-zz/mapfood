@@ -22,15 +22,13 @@ public class GoogleMapsClient {
             } else {
                 req.arrivalTime(time);
             }
-            DistanceMatrix matrix = req.origins(startingPoints)
+            return req.origins(startingPoints)
                     .destinations(destination)
                     .mode(TravelMode.DRIVING)
                     .avoid(DirectionsApi.RouteRestriction.TOLLS)
                     .language(LANGUAGE)
                     .units(Unit.METRIC)
                     .await();
-
-            return matrix;
 
         } catch (ApiException e) {
             System.out.println(e.getMessage());
