@@ -2,10 +2,7 @@ package com.codenation.mapfood.client;
 
 import com.google.maps.*;
 import com.google.maps.errors.ApiException;
-import com.google.maps.model.DirectionsResult;
-import com.google.maps.model.DistanceMatrix;
-import com.google.maps.model.LatLng;
-import com.google.maps.model.TravelMode;
+import com.google.maps.model.*;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -17,7 +14,7 @@ public class GoogleMapsClient {
     private static final GeoApiContext context = new GeoApiContext.Builder().apiKey(API_KEY).build();
 
     public DistanceMatrix estimateRouteTime(Instant time, Boolean isForCalculateArrivalTime,
-                                            LatLng departure, LatLng... arrivals) {
+                                            LatLng[] startingPoints, LatLng destination) {
         try {
             DistanceMatrixApiRequest req = DistanceMatrixApi.newRequest(context);
             if (isForCalculateArrivalTime) {
@@ -25,12 +22,15 @@ public class GoogleMapsClient {
             } else {
                 req.arrivalTime(time);
             }
-            return req.origins(departure)
-                    .destinations(arrivals)
+            DistanceMatrix matrix = req.origins(startingPoints)
+                    .destinations(destination)
                     .mode(TravelMode.DRIVING)
                     .avoid(DirectionsApi.RouteRestriction.TOLLS)
                     .language(LANGUAGE)
+                    .units(Unit.METRIC)
                     .await();
+
+            return matrix;
 
         } catch (ApiException e) {
             System.out.println(e.getMessage());
@@ -42,7 +42,7 @@ public class GoogleMapsClient {
     }
 
     public DirectionsResult getDirections(Instant time, Boolean isForCalculateArrivalTime,
-                              LatLng departure, LatLng arrival) {
+                                          LatLng departure, LatLng arrival, LatLng[] stops) {
         DirectionsApiRequest req = DirectionsApi.newRequest(context);
         try {
             if (isForCalculateArrivalTime) {
@@ -54,6 +54,8 @@ public class GoogleMapsClient {
                     .mode(TravelMode.DRIVING)
                     .avoid(DirectionsApi.RouteRestriction.TOLLS)
                     .language(LANGUAGE)
+                    .units(Unit.METRIC)
+                    .waypoints(stops)
                     .await();
 
         } catch (ApiException e) {
