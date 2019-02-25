@@ -17,9 +17,11 @@ public class MotoboyServiceImpl implements MotoboyService {
 
     @Autowired
     private MotoboyRepository repository;
+
     private static final double degreeInMeter = 111e3D;
     private static final int minimumMotoboys = 5;
 
+    @Override
     public List<Motoboy> getAll() {
         return repository.findAll();
     }
@@ -27,14 +29,14 @@ public class MotoboyServiceImpl implements MotoboyService {
     private List<Motoboy> getAllInRange(Coordinates coordinates, double radio) {
         List<Motoboy> motoboys = new ArrayList<>();
 
-        double lat = coordinates.getLatitude().doubleValue();
-        double lon = coordinates.getLongitude().doubleValue();
+        double lat = coordinates.getLatitude();
+        double lon = coordinates.getLongitude();
         double angle = radio / (degreeInMeter * Math.cos(lat));
 
-        BigDecimal minLat = BigDecimal.valueOf(lat - angle);
-        BigDecimal maxLat = BigDecimal.valueOf(lat + angle);
-        BigDecimal minLon = BigDecimal.valueOf(lon - angle);
-        BigDecimal maxLon = BigDecimal.valueOf(lon + angle);
+        Double minLat = lat - angle;
+        Double maxLat = lat + angle;
+        Double minLon = lon - angle;
+        Double maxLon = lon + angle;
 
         motoboys = repository.findByCoordinates_LongitudeBetweenAndCoordinates_LatitudeBetween(minLon, maxLon, minLat, maxLat);
 
@@ -69,7 +71,7 @@ public class MotoboyServiceImpl implements MotoboyService {
         return motoboys;
     }
 
-
+    @Override
     public Motoboy getNearest(Coordinates coordinates) {
         return getAllInCloseRange(coordinates).stream().
                 min(Comparator.comparing(m -> coordinates.distanceFrom(m.getCoordinates()))).get();

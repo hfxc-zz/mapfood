@@ -2,46 +2,43 @@ package com.codenation.mapfood.model;
 
 import javax.persistence.Embeddable;
 import java.math.BigDecimal;
-import java.math.MathContext;
 
 @Embeddable
 public class Coordinates {
-    private BigDecimal longitude;
-    private BigDecimal latitude;
+    private Double longitude;
+    private Double latitude;
     private static final double R = 6371e3D;
 
     Coordinates() {
     }
 
     public Coordinates(String longitude, String latitude) {
-        MathContext mathContext = new MathContext(8);
-
-        this.longitude = new BigDecimal(longitude, mathContext);
-        this.latitude = new BigDecimal(latitude, mathContext);
+        this.longitude = Double.parseDouble(longitude);
+        this.latitude = Double.parseDouble(latitude);
     }
 
-    public BigDecimal getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(BigDecimal longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
-    public BigDecimal getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(BigDecimal latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
     public Double distanceFrom(Coordinates coordinate) {
         //Haversine formula
-        double lat1 = Math.toRadians(coordinate.latitude.doubleValue());
-        double lat2 = Math.toRadians(this.latitude.doubleValue());
+        double lat1 = Math.toRadians(coordinate.latitude);
+        double lat2 = Math.toRadians(this.latitude);
         double dLat = lat2 - lat1;
-        double dLong = Math.toRadians(this.longitude.subtract(coordinate.longitude).doubleValue());
+        double dLong = Math.toRadians(this.longitude - coordinate.longitude);
 
         double a = Math.sin(dLat/2D) * Math.sin(dLat/2D) +
                 Math.cos(lat1) * Math.cos(lat2) *

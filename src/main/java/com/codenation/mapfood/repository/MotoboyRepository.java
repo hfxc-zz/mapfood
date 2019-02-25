@@ -11,5 +11,5 @@ import java.util.List;
 public interface MotoboyRepository extends JpaRepository<Motoboy, Long> {
 
     List<Motoboy>
-    findByCoordinates_LongitudeBetweenAndCoordinates_LatitudeBetween(BigDecimal minLon, BigDecimal maxLon, BigDecimal minLat, BigDecimal maxLat);
+    findByCoordinates_LongitudeBetweenAndCoordinates_LatitudeBetween(Double minLon, Double maxLon, Double minLat, Double maxLat);
 }

@@ -1,19 +1,18 @@
 package com.codenation.mapfood.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import java.math.BigDecimal;
+import javax.persistence.*;
 
 @Entity
 public class Product {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_seq")
+    @SequenceGenerator(name = "product_seq", sequenceName = "product_seq", allocationSize = 1)
+    private Long id;
 
     private String description;
     private String category;
-    private BigDecimal unitPrice;
+    private Double unitPrice;
 
     @ManyToOne
     private Restaurant restaurant;
@@ -21,11 +20,22 @@ public class Product {
     @ManyToOne
     private City city;
 
-    public String getId() {
+    public Product() {
+    }
+
+    public Product(String description, Long restaurantId, String category, Double unitPrice, City city) {
+        this.description = description;
+        this.category = category;
+        this.unitPrice = unitPrice;
+        this.restaurant = new Restaurant(restaurantId);
+        this.city = city;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -53,11 +63,11 @@ public class Product {
         this.category = category;
     }
 
-    public BigDecimal getUnitPrice() {
+    public Double getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(BigDecimal unitPrice) {
+    public void setUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
     }
 

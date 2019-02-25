@@ -1,19 +1,21 @@
 package com.codenation.mapfood.model;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 public class Orders {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_seq")
-    @SequenceGenerator(name = "order_seq", sequenceName = "order_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orders_seq")
+    @SequenceGenerator(name = "orders_seq", sequenceName = "orders_seq", allocationSize = 1)
     private Long id;
 
     @ManyToMany
-    @JoinTable(name = "orders_product", joinColumns = @JoinColumn(name = "orders_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<Product> products;
-    private boolean inProgress;
+    @JoinTable(name = "orders_items", joinColumns = @JoinColumn(name = "orders_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private List<OrdersItem> items;
 
     @ManyToOne
     @JoinColumn(name="restaurant_id")
@@ -27,6 +29,22 @@ public class Orders {
     @JoinColumn(name="motoboy_id")
     private Motoboy motoboy;
 
+    private Double orderPrice;
+
+    @ManyToOne
+    @JoinColumn(name="delivery_id")
+    private Delivery delivery;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    private LocalDate creationDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    private LocalDate finishDate;
+
+    private String status;
+
+    private boolean inProgress;
+
     public Long getId() {
         return id;
     }
@@ -35,20 +53,12 @@ public class Orders {
         this.id = id;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public List<OrdersItem> getItems() {
+        return items;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
-    public boolean isInProgress() {
-        return inProgress;
-    }
-
-    public void setInProgress(boolean inProgress) {
-        this.inProgress = inProgress;
+    public void setItems(List<OrdersItem> items) {
+        this.items = items;
     }
 
     public Restaurant getRestaurant() {
@@ -73,5 +83,53 @@ public class Orders {
 
     public void setMotoboy(Motoboy motoboy) {
         this.motoboy = motoboy;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public LocalDate getFinishDate() {
+        return finishDate;
+    }
+
+    public void setFinishDate(LocalDate finishDate) {
+        this.finishDate = finishDate;
+    }
+
+    public boolean isInProgress() {
+        return inProgress;
+    }
+
+    public void setInProgress(boolean inProgress) {
+        this.inProgress = inProgress;
+    }
+
+    public Delivery getDelivery() {
+        return delivery;
+    }
+
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
+    }
+
+    public Double getOrderPrice() {
+        return orderPrice;
+    }
+
+    public void setOrderPrice(Double orderPrice) {
+        this.orderPrice = orderPrice;
     }
 }
