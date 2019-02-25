@@ -25,10 +25,6 @@ public class Orders {
     @JoinColumn(name="customer_id")
     private Customer customer;
 
-    @ManyToOne
-    @JoinColumn(name="motoboy_id")
-    private Motoboy motoboy;
-
     private Double orderPrice;
 
     @ManyToOne
@@ -75,14 +71,6 @@ public class Orders {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
-    }
-
-    public Motoboy getMotoboy() {
-        return motoboy;
-    }
-
-    public void setMotoboy(Motoboy motoboy) {
-        this.motoboy = motoboy;
     }
 
     public String getStatus() {

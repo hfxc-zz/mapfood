@@ -1,8 +1,6 @@
 package com.codenation.mapfood.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.util.CollectionUtils;
-
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -20,12 +18,23 @@ public class Delivery {
     @JsonIgnore
     private List<Orders> orders;
 
-    @Size(max = 5)
-    @ManyToMany
-    @JoinTable(name = "delivery_customers",
-            joinColumns = {@JoinColumn(name = "delivery_id") },
-            inverseJoinColumns = {@JoinColumn(name = "customer_id") })
-    private List<Customer> customers;
+    @Embedded
+    @AttributeOverrides( {
+            @AttributeOverride(name="latitude", column = @Column(name="origin_lat") ),
+            @AttributeOverride(name="longitude", column = @Column(name="origin_lon") ),
+    })
+    private Coordinates origin;
+
+    @Embedded
+    @AttributeOverrides( {
+            @AttributeOverride(name="latitude", column = @Column(name="dest_lat") ),
+            @AttributeOverride(name="longitude", column = @Column(name="dest_lon") ),
+    })
+    private Coordinates destination;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "delivery_id")
+    private List<Stop> stops;
 
     @ManyToOne
     @JoinColumn(name = "motoboy_id")
@@ -62,12 +71,28 @@ public class Delivery {
         this.orders = orders;
     }
 
-    public List<Customer> getCustomers() {
-        return customers;
+    public Coordinates getOrigin() {
+        return origin;
     }
 
-    public void setCustomers(List<Customer> customers) {
-        this.customers = customers;
+    public void setOrigin(Coordinates origin) {
+        this.origin = origin;
+    }
+
+    public List<Stop> getStops() {
+        return stops;
+    }
+
+    public void setStops(List<Stop> stops) {
+        this.stops = stops;
+    }
+
+    public Coordinates getDestination() {
+        return destination;
+    }
+
+    public void setDestination(Coordinates destination) {
+        this.destination = destination;
     }
 
     public Motoboy getMotoboy() {
