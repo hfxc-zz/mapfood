@@ -26,7 +26,7 @@ public class OrderController {
         });
 
         OrderDTO response = new OrderDTO(storedOrder.getId(), storedOrder.getCustomer().getId(),
-                productIdList, storedOrder.getRestaurant().getName(), storedOrder.getCreationDate(),
+                productIdList, storedOrder.getRestaurant().getName(), storedOrder.getCreationDate().toLocalDate(),
                 storedOrder.getDelivery().getId(), storedOrder.getStatus());
 
         return response;
