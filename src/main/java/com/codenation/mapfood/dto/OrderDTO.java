@@ -1,6 +1,6 @@
 package com.codenation.mapfood.dto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -12,12 +12,12 @@ public class OrderDTO {
     private Long customerId;
     private List<Long> productIdList;
     private String restaurantName;
-    private LocalDate orderDate;
+    private LocalDateTime orderDate;
     private Long deliveryId;
     private String status;
 
     public OrderDTO(Long id, Long customerId, List<Long> productIdList, String restaurantName,
-                    LocalDate orderDate, Long deliveryId, String status) {
+                    LocalDateTime orderDate, Long deliveryId, String status) {
         this.id = id;
         this.customerId = customerId;
         this.productIdList = productIdList;
@@ -59,11 +59,11 @@ public class OrderDTO {
         this.restaurantName = restaurantName;
     }
 
-    public LocalDate getOrderDate() {
+    public LocalDateTime getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(LocalDate orderDate) {
+    public void setOrderDate(LocalDateTime orderDate) {
         this.orderDate = orderDate;
     }
 
