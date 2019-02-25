@@ -23,11 +23,6 @@ public class MapServiceImpl implements MapService {
         return new LatLng(coordinates.getLatitude().doubleValue(), coordinates.getLongitude().doubleValue());
     }
 
-    @Override
-    public RouteInformation estimateTimeAndDistance(Coordinates src, List<Coordinates> dests) {
-        return null;
-    }
-
     public List<Route> getRoutes(Coordinates origin, Coordinates destination) {
         return getRoutes(origin, destination, new ArrayList<>());
     }
