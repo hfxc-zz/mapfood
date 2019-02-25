@@ -1,23 +1,23 @@
 package com.codenation.mapfood.model;
+
 import javax.persistence.*;
 
 @Entity
-public class Motoboy {
+public class Stop {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "motoboy_seq")
-    @SequenceGenerator(name = "motoboy_seq", sequenceName = "motoboy_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stop_seq")
+    @SequenceGenerator(name = "stop_seq", sequenceName = "stop_seq", allocationSize = 1)
     private Long id;
 
     @Embedded
     private Coordinates coordinates;
 
-    public Motoboy() {
+    public Stop() {
     }
 
-    public Motoboy(Long id, String longitude, String latitude) {
-        this.id = id;
-        this.coordinates = new Coordinates(longitude, latitude);
+    public Stop(Coordinates coordinates) {
+        this.coordinates = coordinates;
     }
 
     public Long getId() {
@@ -35,5 +35,4 @@ public class Motoboy {
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
     }
-
 }

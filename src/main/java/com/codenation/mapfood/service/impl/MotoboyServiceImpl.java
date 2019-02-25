@@ -1,5 +1,6 @@
 package com.codenation.mapfood.service.impl;
 
+import com.codenation.mapfood.exception.NoMotoboyInRangeException;
 import com.codenation.mapfood.model.Coordinates;
 import com.codenation.mapfood.model.Motoboy;
 import com.codenation.mapfood.repository.MotoboyRepository;
@@ -68,12 +69,30 @@ public class MotoboyServiceImpl implements MotoboyService {
             motoboys = getAllInRange(coordinates, 13e3D);
         }
 
+        if(motoboys.size() < minimumMotoboys) {
+            motoboys = getAllInRange(coordinates, 21e3D);
+        }
+
+        if(motoboys.size() < minimumMotoboys) {
+            motoboys = getAllInRange(coordinates, 34e3D);
+        }
+
+        if(motoboys.size() < minimumMotoboys) {
+            motoboys = getAllInRange(coordinates, 55e3D);
+        }
+
         return motoboys;
     }
 
     @Override
-    public Motoboy getNearest(Coordinates coordinates) {
-        return getAllInCloseRange(coordinates).stream().
+    public Motoboy getNearest(Coordinates coordinates) throws NoMotoboyInRangeException {
+        List<Motoboy> motoboysInRange = getAllInCloseRange(coordinates);
+
+        if(motoboysInRange == null || motoboysInRange.size() == 0) {
+            throw new NoMotoboyInRangeException();
+        }
+
+        return motoboysInRange.stream().
                 min(Comparator.comparing(m -> coordinates.distanceFrom(m.getCoordinates()))).get();
     }
 

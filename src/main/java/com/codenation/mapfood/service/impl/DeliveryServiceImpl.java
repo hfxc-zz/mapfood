@@ -44,11 +44,11 @@ public class DeliveryServiceImpl implements DeliveryService {
         List<Delivery> list = getRestaurantInProgressOrders(newOrder.getRestaurant());
         Iterator<Delivery> deliveryIt = list.iterator();
 
-        while (deliveryIt.hasNext() && (newOrder.getDelivery() == null)) {
+        while (deliveryIt.hasNext()) {
             Delivery delivery = deliveryIt.next();
             if (delivery.isAvaliableToNewOrders()) {
                 Iterator<Orders> orderIt = delivery.getOrders().iterator();
-                while (orderIt.hasNext() && (newOrder.getDelivery() == null)) {
+                while (orderIt.hasNext() ) {
                     Orders deliveryOrder = orderIt.next();
 
                     Double distanceBetweenCustomers =
