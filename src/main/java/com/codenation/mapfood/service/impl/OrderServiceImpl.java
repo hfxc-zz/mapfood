@@ -8,16 +8,12 @@ import com.codenation.mapfood.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-    private static final Long MAX_TIME_DIFFERENCE = 2l;
-    private static final Double MAX_DISTANCE_DIFFERENCE = 5d;
 
     @Autowired
     OrderRepository orderRepository;
@@ -43,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Orders registerOrder(Orders requestOrder) {
         Orders orders = fillOrder(requestOrder);
-        Delivery delivery = orderCanBeAddedToAnExistingDelivery(orders);
+        Delivery delivery = deliveryService.orderCanBeAddedToAnExistingDelivery(orders);
 
         if (delivery != null) {
             orders.setInProgress(true);
@@ -51,45 +47,18 @@ public class OrderServiceImpl implements OrderService {
             orders.setStatus("IN PROGRESS");
         } else {
             Motoboy motoboy = motoboyService.getNearest(orders.getRestaurant().getCoordinates());
-            delivery = new Delivery(motoboy, orders.getRestaurant(), "IN PROGRESS");
-            Delivery deliveryStored = deliveryService.add(delivery);
-            orders.setDelivery(deliveryStored);
+            delivery = deliveryService.create(motoboy, orders.getRestaurant(), "IN PROGRESS");
+
+            orders.setDelivery(delivery);
             orders.setStatus("IN PROGRESS");
         }
 
         return orderRepository.save(orders);
     }
 
-    private Delivery orderCanBeAddedToAnExistingDelivery(Orders orders) {
-        List<Delivery> deliveryList = deliveryService.getRestaurantInProgressOrders(orders.getRestaurant());
-        Iterator<Delivery> it = deliveryList.iterator();
-
-        while (it.hasNext() && (orders.getDelivery() != null)) {
-            Delivery delivery = it.next();
-            if (delivery.isAvaliableToNewOrders()) {
-                Iterator<Orders> ordersIterator = delivery.getOrders().iterator();
-                while (ordersIterator.hasNext() && (orders.getDelivery() != null)) {
-                    Orders o = ordersIterator.next();
-
-                    Double distanceBetweenCustomers =
-                            orders.getCustomer().getCoordinates().distanceFrom(o.getCustomer().getCoordinates());
-
-                    Long ordersTimeDifference = ChronoUnit.MINUTES.between(orders.getCreationDate(), o.getCreationDate());
-
-                    if (ordersTimeDifference <= MAX_TIME_DIFFERENCE &&
-                            distanceBetweenCustomers <= MAX_DISTANCE_DIFFERENCE) {
-                        return delivery;
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
     public Orders fillOrder(Orders orders) {
         orders.setStatus("WAITING ANSWER");
-        orders.setCreationDate(LocalDate.now());
+        orders.setCreationDate(LocalDateTime.now());
         orders.setInProgress(false);
 
         try {

@@ -10,5 +10,5 @@ import java.util.List;
  * Created by hfxc on 24/02/19.
  */
 public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
-    List<Delivery> findByRestaurantAndStatus(Restaurant restaurant, String status);
+    List<Delivery> findByRestaurantIdAndStatus(Long id, String status);
 }
