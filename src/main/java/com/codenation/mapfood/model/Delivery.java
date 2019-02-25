@@ -7,9 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-/**
- * Created by hfxc on 24/02/19.
- */
 @Entity
 public class Delivery {
 
