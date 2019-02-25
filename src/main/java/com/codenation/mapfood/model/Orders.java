@@ -2,7 +2,7 @@ package com.codenation.mapfood.model;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -36,10 +36,10 @@ public class Orders {
     private Delivery delivery;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-    private LocalDate creationDate;
+    private LocalDateTime creationDate;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-    private LocalDate finishDate;
+    private LocalDateTime finishDate;
 
     private String status;
 
@@ -93,19 +93,19 @@ public class Orders {
         this.status = status;
     }
 
-    public LocalDate getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDate creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 
-    public LocalDate getFinishDate() {
+    public LocalDateTime getFinishDate() {
         return finishDate;
     }
 
-    public void setFinishDate(LocalDate finishDate) {
+    public void setFinishDate(LocalDateTime finishDate) {
         this.finishDate = finishDate;
     }
 
