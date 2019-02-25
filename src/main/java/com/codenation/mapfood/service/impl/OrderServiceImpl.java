@@ -1,6 +1,7 @@
 package com.codenation.mapfood.service.impl;
 
 import com.codenation.mapfood.exception.NoMotoboyInRangeException;
+import com.codenation.mapfood.exception.NoRouteFoundException;
 import com.codenation.mapfood.exception.ResourceNotFoundException;
 import com.codenation.mapfood.model.*;
 import com.codenation.mapfood.repository.OrderRepository;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -42,25 +45,46 @@ public class OrderServiceImpl implements OrderService {
         Orders orders = fillOrder(requestOrder);
         Delivery delivery = deliveryService.orderCanBeAddedToAnExistingDelivery(orders);
 
-        if (delivery != null) {
-            orders.setInProgress(true);
-            orders.setDelivery(delivery);
-            orders.setStatus("IN PROGRESS");
-        } else {
-            try {
-                Motoboy motoboy = motoboyService.getNearest(orders.getRestaurant().getCoordinates());
-                delivery = deliveryService.create(motoboy, orders.getRestaurant(), "IN PROGRESS");
-                orders.setDelivery(delivery);
-                orders.setInProgress(true);
-                orders.setStatus("IN PROGRESS");
-            } catch (NoMotoboyInRangeException e) {
-                //TODO
-                System.out.println(e.getMessage());
-                return  null;
+        try {
+            if (delivery != null) {
+                updateExistingDelivery(orders, delivery);
+            } else {
+                createNewDelivery(orders);
             }
+        }  catch (NoMotoboyInRangeException | NoRouteFoundException e) {
+            //TODO
+            System.out.println(e.getMessage());
+            return null;
         }
-
         return orderRepository.save(orders);
+    }
+
+    private void updateExistingDelivery(Orders orders, Delivery delivery) throws NoRouteFoundException {
+        delivery.getStops().add(new Stop(delivery.getDestination()));
+        delivery.setDestination(orders.getCustomer().getCoordinates());
+        Delivery deliveryStored = deliveryService.add(delivery);
+        orders.setDelivery(deliveryStored);
+        orders.setInProgress(true);
+        orders.setStatus("IN PROGRESS");
+
+    }
+
+    private void createNewDelivery(Orders orders) throws NoMotoboyInRangeException, NoRouteFoundException {
+        Delivery delivery;
+        Motoboy motoboy = motoboyService.getNearest(orders.getRestaurant().getCoordinates());
+        delivery = new Delivery(motoboy, orders.getRestaurant(), "IN PROGRESS");
+        Delivery deliveryStored =
+                insertDelivery(orders, delivery, motoboy.getCoordinates(), orders.getRestaurant().getCoordinates(), Arrays.asList(orders.getCustomer().getCoordinates()));
+        orders.setDelivery(deliveryStored);
+        orders.setInProgress(true);
+        orders.setStatus("IN PROGRESS");
+    }
+
+    private Delivery insertDelivery(Orders orders, Delivery delivery, Coordinates origin, Coordinates dest, List<Coordinates> stops) throws NoRouteFoundException {
+        delivery.setOrigin(origin);
+        delivery.setDestination(dest);
+        delivery.setStops(stops.stream().map(Stop::new).collect(Collectors.toList()));
+        return deliveryService.add(delivery);
     }
 
     public Orders fillOrder(Orders orders) {
