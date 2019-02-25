@@ -1,5 +1,6 @@
 package com.codenation.mapfood.service;
 
+import com.codenation.mapfood.exception.NoMotoboyInRangeException;
 import com.codenation.mapfood.model.Coordinates;
 import com.codenation.mapfood.model.Motoboy;
 
@@ -9,5 +10,5 @@ public interface MotoboyService {
 
     List<Motoboy> getAll();
 
-    Motoboy getNearest(Coordinates coordinates);
+    Motoboy getNearest(Coordinates coordinates) throws NoMotoboyInRangeException;
 }

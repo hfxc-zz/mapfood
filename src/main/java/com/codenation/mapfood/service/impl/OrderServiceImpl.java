@@ -1,5 +1,6 @@
 package com.codenation.mapfood.service.impl;
 
+import com.codenation.mapfood.exception.NoMotoboyInRangeException;
 import com.codenation.mapfood.exception.ResourceNotFoundException;
 import com.codenation.mapfood.model.*;
 import com.codenation.mapfood.repository.OrderRepository;
@@ -46,11 +47,17 @@ public class OrderServiceImpl implements OrderService {
             orders.setDelivery(delivery);
             orders.setStatus("IN PROGRESS");
         } else {
-            Motoboy motoboy = motoboyService.getNearest(orders.getRestaurant().getCoordinates());
-            delivery = deliveryService.create(motoboy, orders.getRestaurant(), "IN PROGRESS");
-
-            orders.setDelivery(delivery);
-            orders.setStatus("IN PROGRESS");
+            try {
+                Motoboy motoboy = motoboyService.getNearest(orders.getRestaurant().getCoordinates());
+                delivery = deliveryService.create(motoboy, orders.getRestaurant(), "IN PROGRESS");
+                orders.setDelivery(delivery);
+                orders.setInProgress(true);
+                orders.setStatus("IN PROGRESS");
+            } catch (NoMotoboyInRangeException e) {
+                //TODO
+                System.out.println(e.getMessage());
+                return  null;
+            }
         }
 
         return orderRepository.save(orders);
