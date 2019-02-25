@@ -19,6 +19,14 @@ public class Customer {
     @Embedded
     private Coordinates coordinates;
 
+    public Customer() {
+    }
+
+    public Customer(Long id, String longitude, String latitude) {
+        this.id = id;
+        this.coordinates = new Coordinates(longitude, latitude);
+    }
+
     public Long getId() {
         return id;
     }

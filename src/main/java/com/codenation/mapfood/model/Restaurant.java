@@ -8,15 +8,16 @@ import java.util.List;
 public class Restaurant {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "restaurant_seq")
+    @SequenceGenerator(name = "restaurant_seq", sequenceName = "restaurant_seq", allocationSize = 1)
+    private Long id;
 
     private String name;
 
     @Embedded
     private Coordinates coordinates;
 
-    @ManyToOne
-    private RestaurantType type;
+    private String description;
 
     @ManyToOne
     private City city;
@@ -25,12 +26,36 @@ public class Restaurant {
     @JsonIgnore
     private List<Orders> orders;
 
+    public Restaurant() {
+    }
 
-    public String getId() {
+    public Restaurant(Long id) {
+        this.id = id;
+    }
+
+    public Restaurant(Long id, Coordinates coordinates, String name, String description, City city) {
+        this.id = id;
+        this.name = name;
+        this.coordinates = coordinates;
+        this.description = description;
+        this.city = city;
+    }
+
+    public Restaurant(String name, City city, String longitude, String latitude, String description, String hashId) {
+        this.name = name;
+        this.coordinates = new Coordinates(longitude, latitude);
+        this.description = description;
+        this.city = city;
+        this.hashId = hashId;
+    }
+
+    private String hashId;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -58,12 +83,12 @@ public class Restaurant {
         this.coordinates = coordinates;
     }
 
-    public RestaurantType getType() {
-        return type;
+    public String getDescription() {
+        return description;
     }
 
-    public void setType(RestaurantType type) {
-        this.type = type;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public List<Orders> getOrders() {
@@ -72,5 +97,13 @@ public class Restaurant {
 
     public void setOrders(List<Orders> orders) {
         this.orders = orders;
+    }
+
+    public String getHashId() {
+        return hashId;
+    }
+
+    public void setHashId(String hashId) {
+        this.hashId = hashId;
     }
 }

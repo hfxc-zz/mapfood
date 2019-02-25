@@ -4,5 +4,5 @@ import com.codenation.mapfood.model.Orders;
 
 public interface OrderService {
 
-    Orders submitOrder(Orders orders);
+    Orders registerOrder(Orders requestOrder);
 }

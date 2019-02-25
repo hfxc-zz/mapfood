@@ -20,6 +20,14 @@ public class Motoboy {
     @Embedded
     private Coordinates coordinates;
 
+    public Motoboy() {
+    }
+
+    public Motoboy(Long id, String longitude, String latitude) {
+        this.id = id;
+        this.coordinates = new Coordinates(longitude, latitude);
+    }
+
     public Long getId() {
         return id;
     }
