@@ -1,4 +1,4 @@
-package com.codenation.mapfood.exception;
+package com.codenation.mapfood.dto;
 
 import org.springframework.http.HttpStatus;
 

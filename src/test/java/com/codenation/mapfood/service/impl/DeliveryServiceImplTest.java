@@ -2,9 +2,8 @@ package com.codenation.mapfood.service.impl;
 
 import com.codenation.mapfood.client.GoogleMapsClient;
 import com.codenation.mapfood.model.*;
-import com.codenation.mapfood.repository.DeliveryRepository;
-import com.codenation.mapfood.service.DeliveryService;
-import com.codenation.mapfood.service.MapService;
+import com.codenation.mapfood.repository.*;
+import com.codenation.mapfood.service.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,10 +32,27 @@ public class DeliveryServiceImplTest {
 		@Bean
 		public MapService mapService() { return new MapServiceImpl(); }
 
+		//FIX DE ULTIMA HORA PRA UMA ZICA QUE DEU NO CARREGAMENTO DO TESTE
+		@Bean
+		public OrderService orderService() { return new OrderServiceImpl(); }
+
+		@Bean
+		public MotoboyService motoboyService() { return new MotoboyServiceImpl(); }
+
+		@Bean
+		public CustomerService customerService() { return new CustomerServiceImpl(); }
+
+		@Bean
+		public RestaurantService restaurantService() { return new RestaurantServiceImpl(); }
+
+		@Bean
+		public ProductService productService() { return new ProductServiceImpl(); }
+
 		@Bean
 		public DeliveryService deliveryService() {
 			return new DeliveryServiceImpl();
 		}
+		//FIX DE ULTIMA HORA PRA UMA ZICA QUE DEU NO CARREGAMENTO DO TESTE -- FIM
 	}
 
 	@Autowired
@@ -44,6 +60,26 @@ public class DeliveryServiceImplTest {
 
 	@MockBean
 	private DeliveryRepository deliveryRepository;
+
+	//FIX DE ULTIMA HORA PRA UMA ZICA QUE DEU NO CARREGAMENTO DO TESTE
+	@MockBean
+	private OrderRepository orderRepository;
+
+	@MockBean
+	private OrdersItemRepository itemRepository;
+
+	@MockBean
+	private MotoboyRepository motoboyRepository;
+
+	@MockBean
+	private CustomerRepository customerRepository;
+
+	@MockBean
+	private RestaurantRepository repository;
+
+	@MockBean
+	private ProductRepository productRepository;
+	//FIX DE ULTIMA HORA PRA UMA ZICA QUE DEU NO CARREGAMENTO DO TESTE-- FIM
 
 	@Before
 	public void setupRepositoryMock() {
