@@ -2,6 +2,7 @@ package com.codenation.mapfood.controller;
 
 import com.codenation.mapfood.client.Route;
 import com.codenation.mapfood.dto.OrderDTO;
+import com.codenation.mapfood.model.Coordinates;
 import com.codenation.mapfood.model.Delivery;
 import com.codenation.mapfood.model.Orders;
 import com.codenation.mapfood.model.Stop;
@@ -34,8 +35,11 @@ public class OrderController {
         });
 
         Delivery delivery = storedOrder.getDelivery();
-        List<Route> routes = mapService.getRoutes(delivery.getOrigin(), delivery.getDestination(),
-                delivery.getStops().stream()
+        List<Stop> stops = delivery.getStops();
+        Coordinates dest = stops.get(stops.size() - 1).getCoordinates();
+        List<Stop> legs = stops.subList(0, stops.size() - 1);
+        List<Route> routes = mapService.getRoutes(delivery.getOrigin(), dest,
+                        legs.stream()
                         .map(Stop::getCoordinates)
                         .collect(Collectors.toList()));
 
