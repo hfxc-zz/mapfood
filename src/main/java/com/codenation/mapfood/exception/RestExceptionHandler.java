@@ -1,7 +1,6 @@
-package com.codenation.mapfood.controller;
+package com.codenation.mapfood.exception;
 
-import com.codenation.mapfood.exception.ErrorDTO;
-import com.codenation.mapfood.exception.ResourceNotFoundException;
+import com.codenation.mapfood.dto.ErrorDTO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
