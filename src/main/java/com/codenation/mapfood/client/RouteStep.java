@@ -3,30 +3,50 @@ package com.codenation.mapfood.client;
 import com.google.maps.model.DirectionsStep;
 
 public class RouteStep {
-    private Long distance;
-    private Long duration;
+    private String distance;
+    private Long distanceInMeters;
+    private String duration;
+    private Long durationInSeconds;
     private String instruction;
 
     public RouteStep(DirectionsStep step) {
-        this.distance = step.distance.inMeters;
-        this.duration = step.duration.inSeconds;
-        this.instruction = step.htmlInstructions;
+        this.distance = step.distance.humanReadable;
+        this.distanceInMeters = step.distance.inMeters;
+        this.duration = step.duration.humanReadable;
+        this.durationInSeconds = step.duration.inSeconds;
+        this.instruction = removeHtmlTags(step.htmlInstructions);
     }
 
-    public Long getDistance() {
+    public String getDistance() {
         return distance;
     }
 
-    public void setDistance(Long distance) {
+    public void setDistance(String distance) {
         this.distance = distance;
     }
 
-    public Long getDuration() {
+    public Long getDistanceInMeters() {
+        return distanceInMeters;
+    }
+
+    public void setDistanceInMeters(Long distanceInMeters) {
+        this.distanceInMeters = distanceInMeters;
+    }
+
+    public String getDuration() {
         return duration;
     }
 
-    public void setDuration(Long duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
+    }
+
+    public Long getDurationInSeconds() {
+        return durationInSeconds;
+    }
+
+    public void setDurationInSeconds(Long durationInSeconds) {
+        this.durationInSeconds = durationInSeconds;
     }
 
     public String getInstruction() {
@@ -34,6 +54,10 @@ public class RouteStep {
     }
 
     public void setInstruction(String instruction) {
-        this.instruction = instruction;
+        this.instruction = removeHtmlTags(instruction);
+    }
+
+    private String removeHtmlTags(String text) {
+        return text.replaceAll("<(.|\\n)+?>", "");
     }
 }

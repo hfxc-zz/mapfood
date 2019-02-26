@@ -3,9 +3,6 @@ package com.codenation.mapfood.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-/**
- * Created by hfxc on 24/02/19.
- */
 @Entity
 public class OrdersItem {
 

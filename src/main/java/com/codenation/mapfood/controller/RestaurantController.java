@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/**
- * Created by hfxc on 25/02/19.
- */
 @RestController
 @RequestMapping("/restaurant")
 public class RestaurantController {
