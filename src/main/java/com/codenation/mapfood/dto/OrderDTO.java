@@ -1,11 +1,10 @@
 package com.codenation.mapfood.dto;
 
+import com.codenation.mapfood.client.Route;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Created by hfxc on 25/02/19.
- */
 public class OrderDTO {
 
     private Long id;
@@ -15,9 +14,10 @@ public class OrderDTO {
     private LocalDateTime orderDate;
     private Long deliveryId;
     private String status;
+    private List<Route> routes;
 
     public OrderDTO(Long id, Long customerId, List<Long> productIdList, String restaurantName,
-                    LocalDateTime orderDate, Long deliveryId, String status) {
+                    LocalDateTime orderDate, Long deliveryId, String status, List<Route> routes) {
         this.id = id;
         this.customerId = customerId;
         this.productIdList = productIdList;
@@ -25,6 +25,7 @@ public class OrderDTO {
         this.orderDate = orderDate;
         this.deliveryId = deliveryId;
         this.status = status;
+        this.routes = routes;
     }
 
     public Long getId() {
@@ -81,5 +82,13 @@ public class OrderDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public List<Route> getRoutes() {
+        return routes;
+    }
+
+    public void setRoutes(List<Route> routes) {
+        this.routes = routes;
     }
 }
