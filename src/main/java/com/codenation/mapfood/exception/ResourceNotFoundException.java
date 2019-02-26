@@ -1,9 +1,9 @@
 package com.codenation.mapfood.exception;
 
-/**
- * Created by hfxc on 24/02/19.
- */
 public class ResourceNotFoundException extends Exception {
+
+    public final String message = "Resource not found";
+
     public ResourceNotFoundException() {
         super();
     }

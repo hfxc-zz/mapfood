@@ -1,17 +1,18 @@
 package com.codenation.mapfood.service.impl;
 
-import com.codenation.mapfood.model.Delivery;
-import com.codenation.mapfood.model.Motoboy;
-import com.codenation.mapfood.model.Orders;
-import com.codenation.mapfood.model.Restaurant;
+import com.codenation.mapfood.client.Route;
+import com.codenation.mapfood.exception.ResourceNotFoundException;
+import com.codenation.mapfood.model.*;
 import com.codenation.mapfood.repository.DeliveryRepository;
 import com.codenation.mapfood.service.DeliveryService;
+import com.codenation.mapfood.service.MapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DeliveryServiceImpl implements DeliveryService {
@@ -20,6 +21,9 @@ public class DeliveryServiceImpl implements DeliveryService {
 
     @Autowired
     DeliveryRepository repository;
+
+    @Autowired
+    MapService mapService;
 
     @Override
     public List<Delivery> getRestaurantInProgressOrders(Restaurant restaurant) {
@@ -65,5 +69,12 @@ public class DeliveryServiceImpl implements DeliveryService {
         }
 
         return null;
+    }
+
+    @Override
+    public List<Route> getDeliveryRoute(Long id) throws ResourceNotFoundException {
+        Delivery delivery = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException());
+        return mapService.getRoutes(delivery.getOrigin(), delivery.getDestination(),
+                    delivery.getStops().stream().map(Stop::getCoordinates).collect(Collectors.toList()));
     }
 }
