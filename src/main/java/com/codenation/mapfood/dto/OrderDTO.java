@@ -16,6 +16,9 @@ public class OrderDTO {
     private String status;
     private List<Route> routes;
 
+    public OrderDTO() {
+    }
+
     public OrderDTO(Long id, Long customerId, List<Long> productIdList, String restaurantName,
                     LocalDateTime orderDate, Long deliveryId, String status, List<Route> routes) {
         this.id = id;

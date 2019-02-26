@@ -1,8 +1,11 @@
 package com.codenation.mapfood.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -25,13 +28,6 @@ public class Delivery {
     })
     private Coordinates origin;
 
-    @Embedded
-    @AttributeOverrides( {
-            @AttributeOverride(name="latitude", column = @Column(name="dest_lat") ),
-            @AttributeOverride(name="longitude", column = @Column(name="dest_lon") ),
-    })
-    private Coordinates destination;
-
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery_id")
     private List<Stop> stops;
@@ -44,6 +40,14 @@ public class Delivery {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
+    private Double travelledDistance;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    private LocalDateTime creationDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    private LocalDateTime finishDate;
+
     private String status;
 
     public Delivery() {
@@ -53,6 +57,7 @@ public class Delivery {
         this.motoboy = motoboy;
         this.restaurant = restaurant;
         this.status = status;
+        this.travelledDistance = 0D;
     }
 
     public Long getId() {
@@ -87,14 +92,6 @@ public class Delivery {
         this.stops = stops;
     }
 
-    public Coordinates getDestination() {
-        return destination;
-    }
-
-    public void setDestination(Coordinates destination) {
-        this.destination = destination;
-    }
-
     public Motoboy getMotoboy() {
         return motoboy;
     }
@@ -121,5 +118,33 @@ public class Delivery {
 
     public boolean isAvaliableToNewOrders() {
         return (this.orders != null) && (this.orders.size() < 5);
+    }
+
+    public Double getTravelledDistance() {
+        return travelledDistance;
+    }
+
+    public void setTravelledDistance(Double travelledDistance) {
+        this.travelledDistance = travelledDistance;
+    }
+
+    public void addTravelledDistance(Double travelledDistance) {
+        this.travelledDistance += travelledDistance;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public LocalDateTime getFinishDate() {
+        return finishDate;
+    }
+
+    public void setFinishDate(LocalDateTime finishDate) {
+        this.finishDate = finishDate;
     }
 }

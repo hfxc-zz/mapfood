@@ -1,5 +1,7 @@
 package com.codenation.mapfood.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,10 +15,24 @@ public class Stop {
     @Embedded
     private Coordinates coordinates;
 
+    @OneToOne
+    @JoinColumn(name = "order_id")
+    @JsonIgnore
+    private Orders order;
+
+    private boolean visited;
+
     public Stop() {
     }
 
     public Stop(Coordinates coordinates) {
+        this.visited = false;
+        this.coordinates = coordinates;
+    }
+
+    public Stop(Coordinates coordinates, Orders order) {
+        this.visited = false;
+        this.order = order;
         this.coordinates = coordinates;
     }
 
@@ -34,5 +50,33 @@ public class Stop {
 
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
+    }
+
+    public boolean isVisited() {
+        return visited;
+    }
+
+    public void setVisited(boolean visited) {
+        this.visited = visited;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o != null && o instanceof Stop) {
+            Stop other = (Stop) o;
+            if(other.getId() == this.id &&
+                this.coordinates.equals(other.coordinates)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Orders getOrder() {
+        return order;
+    }
+
+    public void setOrder(Orders order) {
+        this.order = order;
     }
 }
