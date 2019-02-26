@@ -119,4 +119,9 @@ public class DeliveryServiceImpl implements DeliveryService {
     public Delivery getById(Long id) throws ResourceNotFoundException {
         return repository.findById(id).orElseThrow(ResourceNotFoundException::new);
     }
+
+    @Override
+    public List<Delivery> getDeliveriesByRestaurantId(Long id) {
+        return repository.findByRestaurantIdAndStatus(id, "COMPLETED");
+    }
 }
