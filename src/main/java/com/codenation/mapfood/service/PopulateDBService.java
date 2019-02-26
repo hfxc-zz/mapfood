@@ -10,9 +10,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-/**
- * Created by hfxc on 25/02/19.
- */
 @Service
 public class PopulateDBService {
 

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.util.List;
 
-@Repository
 public interface MotoboyRepository extends JpaRepository<Motoboy, Long> {
 
     List<Motoboy>
