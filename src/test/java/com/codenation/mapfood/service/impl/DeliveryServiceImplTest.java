@@ -1,8 +1,10 @@
 package com.codenation.mapfood.service.impl;
 
+import com.codenation.mapfood.client.GoogleMapsClient;
 import com.codenation.mapfood.model.*;
 import com.codenation.mapfood.repository.DeliveryRepository;
 import com.codenation.mapfood.service.DeliveryService;
+import com.codenation.mapfood.service.MapService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +26,12 @@ import static org.hamcrest.Matchers.*;
 public class DeliveryServiceImplTest {
 	@TestConfiguration
 	static class DeliveryServiceImplTestContextConfiguration {
+
+		@Bean
+		public GoogleMapsClient mapsClient() { return new GoogleMapsClient(); }
+
+		@Bean
+		public MapService mapService() { return new MapServiceImpl(); }
 
 		@Bean
 		public DeliveryService deliveryService() {
