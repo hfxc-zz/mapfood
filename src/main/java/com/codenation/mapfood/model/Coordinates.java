@@ -8,6 +8,7 @@ public class Coordinates {
     private Double longitude;
     private Double latitude;
     private static final double R = 6371e3D;
+    private static final double EQUALS_THRESHOLD = .001D;
 
     Coordinates() {
     }
@@ -31,6 +32,19 @@ public class Coordinates {
 
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if(o != null && o instanceof Coordinates){
+            Coordinates other = (Coordinates) o;
+            if(Math.abs(this.latitude - other.getLatitude()) < EQUALS_THRESHOLD
+                && Math.abs(this.longitude - other.getLongitude()) < EQUALS_THRESHOLD) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public Double distanceFrom(Coordinates coordinate) {
