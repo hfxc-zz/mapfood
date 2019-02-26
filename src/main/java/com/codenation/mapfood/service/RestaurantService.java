@@ -1,5 +1,6 @@
 package com.codenation.mapfood.service;
 
+import com.codenation.mapfood.model.Delivery;
 import com.codenation.mapfood.model.Restaurant;
 import com.codenation.mapfood.repository.RestaurantRepository;
 import com.codenation.mapfood.exception.ResourceNotFoundException;
@@ -14,4 +15,6 @@ public interface RestaurantService {
     Restaurant findById(Long id) throws ResourceNotFoundException;
 
     List<Restaurant> findAll();
+
+    List<Delivery> getRestaurantDeliveries(Long id);
 }

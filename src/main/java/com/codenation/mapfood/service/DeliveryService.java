@@ -27,4 +27,6 @@ public interface DeliveryService {
     List<Route> getDeliveryRoute(Long id) throws ResourceNotFoundException;
 
     Delivery getById(Long id) throws ResourceNotFoundException;
+
+    List<Delivery> getDeliveriesByRestaurantId(Long id);
 }
