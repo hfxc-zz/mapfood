@@ -32,7 +32,7 @@ public class MotoboyServiceImpl implements MotoboyService {
 
         double lat = coordinates.getLatitude();
         double lon = coordinates.getLongitude();
-        double angle = radio / (degreeInMeter * Math.cos(lat));
+        double angle = Math.abs(radio / (degreeInMeter * Math.cos(lat)));
 
         Double minLat = lat - angle;
         Double maxLat = lat + angle;
